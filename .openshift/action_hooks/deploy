@@ -6,7 +6,7 @@ dbsize=$(mongo -quiet $OPENSHIFT_MONGODB_DB_HOST:$OPENSHIFT_MONGODB_DB_PORT/$OPE
 if [[ $dbsize = "0" ]]
 then
 	# Import the data
-	mongoimport -d $OPENSHIFT_APP_NAME -c toilets --type json --file $OPENSHIFT_REPO_DIR/wellington-city-public-conveniences.json  -h $OPENSHIFT_MONGODB_DB_HOST --port $OPENSHIFT_MONGODB_DB_PORT -u admin -p $OPENSHIFT_MONGODB_DB_PASSWORD
+	mongoimport -d $OPENSHIFT_APP_NAME -c toilets --type json --file $OPENSHIFT_REPO_DIR/wellington-city-public-conveniences.json -h $OPENSHIFT_MONGODB_DB_HOST --port $OPENSHIFT_MONGODB_DB_PORT -u admin -p $OPENSHIFT_MONGODB_DB_PASSWORD
 
 	# Make the 2dsphere index
 	mongo -quiet $OPENSHIFT_MONGODB_DB_HOST:$OPENSHIFT_MONGODB_DB_PORT/$OPENSHIFT_APP_NAME -u $OPENSHIFT_MONGODB_DB_USERNAME -p $OPENSHIFT_MONGODB_DB_PASSWORD --eval 'db.toilets.ensureIndex( { geometry.coordinates : "2dsphere" } );'
