@@ -53,7 +53,7 @@ def within():
     # Make GeoJSON box
     geometry = { "type" : "Polygon", "coordinates" : [[[lon1, lat1], [lon2, lat1], [lon2, lat2], [lon1, lat2], [lon1, lat1]]]}
     # Limit results for large datasets 
-    result = db.placenames.find({"pos" : { "$geoWithin" : { "$geometry" : geometry} } }).limit(800)
+    result = db.toilets.find({"geometry.coordinates" : { "$geoWithin" : { "$geometry" : geometry} } }).limit(800)
     return Response(response=str(json.dumps({'results':list(result)},default=json_util.default)), status=200, mimetype="application/json" )
 
 @app.route("/ws/toilets/near")
@@ -64,7 +64,7 @@ def near():
     lon = float(request.args.get('lon'))
 
     # Limit results in case dataset is large
-    result = db.placenames.find({"pos" : { "$near" : {"$geometry" : { "type" : "Point" , "coordinates": [ lon , lat ] }}}}).limit(200)
+    result = db.toilets.find({"geometry.coordinates" : { "$near" : {"$geometry" : { "type" : "Point" , "coordinates": [ lon , lat ] }}}}).limit(200)
 
     # Convert results into valid JSON
     return Response(response=str(json.dumps({'results':list(result)},default=json_util.default)), status=200, mimetype="application/json" )
@@ -73,7 +73,7 @@ def near():
 def all_toilets():
     db = get_db()
 
-    result = db.placenames.find().limit(200)
+    result = db.toilets.find().limit(200)
     return Response(response=str(json.dumps({'results':list(result)},default=json_util.default)), status=200, mimetype="application/json" )
 
 if __name__ == "__main__":
