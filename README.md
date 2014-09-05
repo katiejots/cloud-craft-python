@@ -11,5 +11,7 @@ Or [link to a web-based clone+deploy](https://openshift.redhat.com/app/console/a
 
 A demo is available at: [http://conveniences-cloudcraft.rhcloud.com/](http://conveniences-cloudcraft.rhcloud.com/)
 
+Toilet icon by [http://twitter.com/benhoad](Ben Hoad).
+
 ## License
 This code is dedicated to the public domain to the maximum extent permitted by applicable law, pursuant to CC0 (http://creativecommons.org/publicdomain/zero/1.0/)
