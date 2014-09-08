@@ -32,7 +32,7 @@ def get_MongoDB():
     db_pass = os.getenv('OPENSHIFT_MONGODB_DB_PASSWORD', '')
     db_name = os.getenv('OPENSHIFT_APP_NAME', 'conveniences')
      
-    client = MongoClient(db_host,  int(db_port))
+    client = MongoClient(db_host, int(db_port))
     if db_user:
         client[db_name].authenticate(db_user, db_pass, source='admin')
     db = client[db_name]
