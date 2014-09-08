@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="/css/ribbon.css" />
     <script src="http://code.jquery.com/jquery-2.0.0.min.js"></script>
     <link href='http://fonts.googleapis.com/css?family=Milonga' rel='stylesheet' type='text/css'>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />	<style type="text/css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />	
+    <style type="text/css">
         body {
             padding: 0;
             margin: 0;
@@ -20,17 +21,28 @@
         }
         .leaflet-container .leaflet-control-zoom {
             margin-left: 13px;
-            margin-top: 70px;
+            margin-top: 100px;
         }
         #map { z-index: 1;}
         #title { z-index: 2; position: absolute; left: 10px; }
     </style>
 </head>
 <body>
-    <h1 id="title">Convenience Finder</h1>
+    <h1 id="title"><img src="images/conveniencefinder.png" alt="Convenience Finder"/></h1>
     <div id="map"></div>
     <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
     <script>
+        // Custom icon
+        var toiletIcon = L.icon({
+            iconUrl: 'images/toilet.png',
+            shadowUrl: 'images/toilet-shadow.png',
+            iconSize:     [39, 50],
+            shadowSize:   [33, 25],
+            iconAnchor:   [19, 50],
+            shadowAnchor: [0, 25],
+            popupAnchor:  [-5, -40]
+        });
+    
         // Center the map and set the zoom level
         var map = L.map('map').setView([-41.3, 174.8], 14);
 
@@ -63,6 +75,8 @@
                            '<div class="type">Type: ' + toilet.properties.Type + '</div>' +
                            '<div class="disabled">Disabled Access: ' + toilet.properties.Disabled + '</div>';
                 markerArray[i] = L.marker([toilet.geometry.coordinates[1], toilet.geometry.coordinates[0]]).bindPopup(info);
+                // Add point with custom icon
+                // markerArray[i] = L.marker([toilet.geometry.coordinates[1], toilet.geometry.coordinates[0]], {icon: toiletIcon}).bindPopup(info);
             }
 
             markerLayerGroup = L.layerGroup(markerArray).addTo(map);
@@ -73,6 +87,6 @@
         map.whenReady(getPins)
 
     </script>
-    <span id="fossribbon"><a href="https://openshift.redhat.com/app/console/application_types/custom?name=conveniences&initial_git_url=https%3A%2F%2Fgithub.com/codemiller/cloud-craft-python.git&cartridges[]=python-2&cartridges[]=mongodb-2">Run me on OpenShift</a></span>
+    <span id="fossribbon"><a href="https://openshift.redhat.com/app/console/application_types/custom?name=conveniences&initial_git_url=https%3A%2F%2Fgithub.com/codemiller/cloud-craft-python.git&cartridges[]=python-2.7&cartridges[]=mongodb-2&scale=true">Run me on OpenShift</a></span>
 </body>
 </html>
