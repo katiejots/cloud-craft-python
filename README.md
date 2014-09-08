@@ -29,4 +29,4 @@ Run the app on localhost with the following command:
 ## License
 This code is dedicated to the public domain to the maximum extent permitted by applicable law, pursuant to CC0 (http://creativecommons.org/publicdomain/zero/1.0/)
 
-Toilet icon by [http://twitter.com/benhoad](Ben Hoad).
+Toilet icon by [Ben Hoad](http://twitter.com/benhoad).
