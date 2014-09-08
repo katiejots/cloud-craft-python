@@ -1,17 +1,32 @@
 # Map of Toilets in Wellington, New Zealand 
-*powered by Flask, Python, MongoDB, and Leaflet maps*
+*powered by Flask, Python, MongoDB, and Leaflet.js*
 
 To deploy a clone of this application using the [`rhc` command line tool](http://rubygems.org/gems/rhc):
 
-    rhc app create conveniences python-2.7 mongodb-2 --from-code=https://github.com/codemiller/cloud-craft-python.git -s
+    rhc app create conveniences python-2.7 mongodb-2.4 --from-code=https://github.com/codemiller/cloud-craft-python.git -s
     
-Or [link to a web-based clone+deploy](https://openshift.redhat.com/app/console/application_type/custom?cartridges%5B%5D=python-2.7&cartridges%5B%5D=mongodb-2&initial_git_url=https%3A%2F%2Fgithub.com%2Fcodemiller%2Fcloud-craft-python.git) on [OpenShift Online](http://OpenShift.com) or on [your own OpenShift cloud](http://openshift.github.io): 
+Or [link to a web-based clone+deploy](https://openshift.redhat.com/app/console/application_type/custom?cartridges%5B%5D=python-2.7&scale=true&cartridges%5B%5D=mongodb-2&initial_git_url=https%3A%2F%2Fgithub.com%2Fcodemiller%2Fcloud-craft-python.git) on [OpenShift Online](http://OpenShift.com) or on [your own OpenShift cloud](http://openshift.github.io): 
 
-    https://openshift.redhat.com/app/console/application_type/custom?cartridges%5B%5D=python-2.7&cartridges%5B%5D=mongodb-2&initial_git_url=https%3A%2F%2Fgithub.com%2Fcodemiller%2Fcloud-craft-python.git
+    https://openshift.redhat.com/app/console/application_type/custom?cartridges%5B%5D=python-2.7&scale=true&cartridges%5B%5D=mongodb-2&initial_git_url=https%3A%2F%2Fgithub.com%2Fcodemiller%2Fcloud-craft-python.git
 
 A demo is available at: [http://conveniences-cloudcraft.rhcloud.com/](http://conveniences-cloudcraft.rhcloud.com/)
 
-Toilet icon by [http://twitter.com/benhoad](Ben Hoad).
+## Local Development
+
+To run the application locally, install Python 2.7, MongoDB 2.4 or higher, and the required Python modules in _requirements.txt_ (these can be installed using [http://en.wikipedia.org/wiki/Pip_(package_manager)](Pip), eg: `sudo pip install Flask`).
+
+Make sure MongoDB is running, and add the data and index with commands such as the following: 
+
+	mongoimport -d conveniences -c toilets --type json --file wellington-city-public-conveniences.json
+	mongo conveniences --eval 'db.toilets.ensureIndex( { "geometry.coordinates" : "2dsphere" } );'
+
+Check that the default DB connection parameters in _conveniences.py_ match your locally running MongoDB instance.
+
+Run the app on localhost with the following command:
+
+    python wsgi.py
 
 ## License
 This code is dedicated to the public domain to the maximum extent permitted by applicable law, pursuant to CC0 (http://creativecommons.org/publicdomain/zero/1.0/)
+
+Toilet icon by [http://twitter.com/benhoad](Ben Hoad).

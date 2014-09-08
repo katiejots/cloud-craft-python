@@ -25,11 +25,17 @@ def get_db():
         g.mongodb_client = get_MongoDB()
     return g.mongodb_client
 
-
 def get_MongoDB():
-    client = MongoClient(os.environ['OPENSHIFT_MONGODB_DB_HOST'],  int(os.environ['OPENSHIFT_MONGODB_DB_PORT']))
-    client[os.environ['OPENSHIFT_APP_NAME']].authenticate(os.environ['OPENSHIFT_MONGODB_DB_USERNAME'], os.environ['OPENSHIFT_MONGODB_DB_PASSWORD'], source='admin')
-    db = client[os.environ['OPENSHIFT_APP_NAME']]
+    db_host = os.getenv('OPENSHIFT_MONGODB_DB_HOST', 'localhost')
+    db_port = os.getenv('OPENSHIFT_MONGODB_DB_PORT', '27017')
+    db_user = os.getenv('OPENSHIFT_MONGODB_DB_USERNAME', '')
+    db_pass = os.getenv('OPENSHIFT_MONGODB_DB_PASSWORD', '')
+    db_name = os.getenv('OPENSHIFT_APP_NAME', 'conveniences')
+     
+    client = MongoClient(db_host,  int(db_port))
+    if db_user:
+        client[db_name].authenticate(db_user, db_pass, source='admin')
+    db = client[db_name]
     return db
 
 @app.teardown_appcontext

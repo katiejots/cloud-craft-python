@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import os
 
-virtenv = os.environ['OPENSHIFT_PYTHON_DIR'] + '/virtenv/'
+virtenv = os.getenv('OPENSHIFT_PYTHON_DIR', '') + '/virtenv/'
 virtualenv = os.path.join(virtenv, 'bin/activate_this.py')
 try:
     execfile(virtualenv, dict(__file__=virtualenv))
@@ -12,11 +12,11 @@ except IOError:
 # line, it's possible required libraries won't be in your searchable path
 #
 
-from ws import app as application
+from conveniences import app as application
 
 # For testing only
 if __name__ == '__main__':
     from wsgiref.simple_server import make_server
-    httpd = make_server('localhost', 8051, application)
-    # Wait for a single request, serve it and quit
-    httpd.handle_request()
+    httpd = make_server('localhost', 8080, application)
+    print "Server running at localhost:8080"
+    httpd.serve_forever()
