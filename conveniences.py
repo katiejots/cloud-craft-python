@@ -15,7 +15,7 @@ def index():
 
 @app.route('/<path:resource>')
 def serveStaticResource(resource):
-        return send_from_directory('static/', resource)
+    return send_from_directory('static/', resource)
 
 def get_db():
     if not hasattr(g, 'mongodb_client'):
