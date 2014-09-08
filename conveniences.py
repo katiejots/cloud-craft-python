@@ -36,7 +36,7 @@ def get_MongoDB():
     db = client[conf['DB_NAME']]
     return db
 
-@app.route("/ws/toilets/within")
+@app.route("/toilets/within")
 def within():
     db = get_db()
 
@@ -52,7 +52,7 @@ def within():
     result = db.toilets.find({"geometry.coordinates" : { "$geoWithin" : { "$geometry" : geometry} } }).limit(conf['RESULT_LIMIT'])
     return Response(response=str(json.dumps({'results':list(result)},default=json_util.default)), status=200, mimetype="application/json" )
 
-@app.route("/ws/toilets/near")
+@app.route("/toilets/near")
 def near():
     db = get_db()
     # Get request parameters - production code would check for invalid values
@@ -65,7 +65,7 @@ def near():
     # Convert results into valid JSON
     return Response(response=str(json.dumps({'results':list(result)},default=json_util.default)), status=200, mimetype="application/json" )
 
-@app.route("/ws/toilets")
+@app.route("/toilets")
 def all_toilets():
     db = get_db()
 
