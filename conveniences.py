@@ -1,24 +1,16 @@
-from flask import Flask
-from flask import g
-from flask import Response
-from flask import request
-from flask import render_template
+from bson import json_util, objectid
+from flask import Flask, g, render_template, request, Response
+import json
 import os
 from pymongo.mongo_client import MongoClient
-import json
-from bson import json_util
-from bson import objectid
 
-# Define location of static content
-app = Flask(__name__, static_url_path='' )
-# Don't let Flask swallow error messages
-app.config['PROPAGATE_EXCEPTIONS'] = True
+app = Flask(__name__)
+app.config.from_pyfile('conveniences.cfg')
+conf = app.config
 
 @app.route('/')
 def index():
     return app.send_static_file("index.html")
-
-# Database setup
 
 def get_db():
     if not hasattr(g, 'mongodb_client'):
@@ -26,16 +18,10 @@ def get_db():
     return g.mongodb_client
 
 def get_MongoDB():
-    db_host = os.getenv('OPENSHIFT_MONGODB_DB_HOST', 'localhost')
-    db_port = os.getenv('OPENSHIFT_MONGODB_DB_PORT', '27017')
-    db_user = os.getenv('OPENSHIFT_MONGODB_DB_USERNAME', '')
-    db_pass = os.getenv('OPENSHIFT_MONGODB_DB_PASSWORD', '')
-    db_name = os.getenv('OPENSHIFT_APP_NAME', 'conveniences')
-     
-    client = MongoClient(db_host, int(db_port))
-    if db_user:
-        client[db_name].authenticate(db_user, db_pass, source='admin')
-    db = client[db_name]
+    client = MongoClient(conf['DB_HOST'], conf['DB_PORT'])
+    if conf['DB_USER']:
+        client[conf['DB_NAME']].authenticate(conf['DB_USER'], conf['DB_PASS'], source='admin')
+    db = client[conf['DB_NAME']]
     return db
 
 @app.teardown_appcontext
@@ -43,8 +29,6 @@ def close_db(error):
     """Closes the database again at the end of the request."""
 if hasattr(g, 'mongodb_client'):
     g.mongodb_client.close()
-
-# Endpoints 
 
 @app.route("/ws/toilets/within")
 def within():
@@ -59,7 +43,7 @@ def within():
     # Make GeoJSON box
     geometry = { "type" : "Polygon", "coordinates" : [[[lon1, lat1], [lon2, lat1], [lon2, lat2], [lon1, lat2], [lon1, lat1]]]}
     # Limit results for large datasets 
-    result = db.toilets.find({"geometry.coordinates" : { "$geoWithin" : { "$geometry" : geometry} } }).limit(800)
+    result = db.toilets.find({"geometry.coordinates" : { "$geoWithin" : { "$geometry" : geometry} } }).limit(conf['RESULT_LIMIT'])
     return Response(response=str(json.dumps({'results':list(result)},default=json_util.default)), status=200, mimetype="application/json" )
 
 @app.route("/ws/toilets/near")
@@ -70,7 +54,7 @@ def near():
     lon = float(request.args.get('lon'))
 
     # Limit results in case dataset is large
-    result = db.toilets.find({"geometry.coordinates" : { "$near" : {"$geometry" : { "type" : "Point" , "coordinates": [ lon , lat ] }}}}).limit(200)
+    result = db.toilets.find({"geometry.coordinates" : { "$near" : {"$geometry" : { "type" : "Point" , "coordinates": [ lon , lat ] }}}}).limit(conf['RESULT_LIMIT'])
 
     # Convert results into valid JSON
     return Response(response=str(json.dumps({'results':list(result)},default=json_util.default)), status=200, mimetype="application/json" )
@@ -79,7 +63,7 @@ def near():
 def all_toilets():
     db = get_db()
 
-    result = db.toilets.find().limit(200)
+    result = db.toilets.find().limit(conf['RESULT_LIMIT'])
     return Response(response=str(json.dumps({'results':list(result)},default=json_util.default)), status=200, mimetype="application/json" )
 
 if __name__ == "__main__":

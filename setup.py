@@ -6,5 +6,5 @@ setup(name='ConvenienceFinder',
       author='Katie Miller',
       author_email='katie@codemiller.com',
       url='http://github.com/codemiller/cloud-craft-python',
-#      install_requires=[],
+      install_requires=['Flask>=0.10.1','pymongo>=2.7.2'],
      )

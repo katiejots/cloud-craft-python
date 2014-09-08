@@ -13,18 +13,18 @@ A demo is available at: [http://conveniences-cloudcraft.rhcloud.com/](http://con
 
 ## Local Development
 
-To run the application locally, install Python 2.7, MongoDB 2.4 or higher, and the required Python modules in _requirements.txt_ (these can be installed using [Pip](http://en.wikipedia.org/wiki/Pip_\(package_manager\)), eg: `sudo pip install Flask`).
+To run the application locally, install Python, MongoDB 2.4 or higher, and the required Python modules in _setup.py_ (these can be installed using [Pip](http://en.wikipedia.org/wiki/Pip_\(package_manager\)), eg: `sudo pip install Flask && sudo pip install pymongo`). Alternatively, you could use `rhc port-forward` and set the database connection parameters in _conveniences.cfg_ to point to the instance of MongoDB hosted on OpenShift.
 
 Make sure MongoDB is running, and add the data and index with commands such as the following: 
 
 	mongoimport -d conveniences -c toilets --type json --file wellington-city-public-conveniences.json
 	mongo conveniences --eval 'db.toilets.ensureIndex( { "geometry.coordinates" : "2dsphere" } )'
 
-Check that the default DB connection parameters in _conveniences.py_ match your locally running MongoDB instance.
+Check that the default DB connection parameters in _conveniences.cfg_ match your locally running MongoDB instance.
 
 Run the app on localhost with the following command:
 
-    python wsgi.py
+    python app.py
 
 ## License
 This code is dedicated to the public domain to the maximum extent permitted by applicable law, pursuant to CC0 (http://creativecommons.org/publicdomain/zero/1.0/)
