@@ -12,6 +12,10 @@ conf = app.config
 def index():
     return app.send_static_file("index.html")
 
+@app.route('/<path:resource>')
+def serveStaticResource(resource):
+        return send_from_directory('static/', resource)
+
 def get_db():
     if not hasattr(g, 'mongodb_client'):
         g.mongodb_client = get_MongoDB()
@@ -23,12 +27,6 @@ def get_MongoDB():
         client[conf['DB_NAME']].authenticate(conf['DB_USER'], conf['DB_PASS'], source='admin')
     db = client[conf['DB_NAME']]
     return db
-
-@app.teardown_appcontext
-def close_db(error):
-    """Closes the database again at the end of the request."""
-if hasattr(g, 'mongodb_client'):
-    g.mongodb_client.close()
 
 @app.route("/ws/toilets/within")
 def within():
