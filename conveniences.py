@@ -1,5 +1,5 @@
 from bson import json_util, objectid
-from flask import Flask, g, render_template, request, Response
+from flask import Flask, g, render_template, request, Response, send_from_directory
 import json
 import os
 from pymongo.mongo_client import MongoClient
@@ -7,6 +7,7 @@ from pymongo.mongo_client import MongoClient
 app = Flask(__name__)
 app.config.from_pyfile('conveniences.cfg')
 conf = app.config
+app.static_url_path = conf['STATIC_URL_PATH'] if conf['STATIC_URL_PATH'] else ''
 
 @app.route('/')
 def index():
