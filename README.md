@@ -18,7 +18,7 @@ To run the application locally, install Python 2.7, MongoDB 2.4 or higher, and t
 Make sure MongoDB is running, and add the data and index with commands such as the following: 
 
 	mongoimport -d conveniences -c toilets --type json --file wellington-city-public-conveniences.json
-	mongo conveniences --eval 'db.toilets.ensureIndex( { "geometry.coordinates" : "2dsphere" } );'
+	mongo conveniences --eval 'db.toilets.ensureIndex( { "geometry.coordinates" : "2dsphere" } )'
 
 Check that the default DB connection parameters in _conveniences.py_ match your locally running MongoDB instance.
 
