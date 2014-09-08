@@ -14,7 +14,7 @@ def index():
     return app.send_static_file("index.html")
 
 @app.route('/<path:resource>')
-def serveStaticResource(resource):
+def serve_static_resource(resource):
     return send_from_directory('static/', resource)
 
 def get_db():
