@@ -13,7 +13,7 @@ A demo is available at: [http://conveniences-cloudcraft.rhcloud.com/](http://con
 
 ## Local Development
 
-To run the application locally, install Python 2.7, MongoDB 2.4 or higher, and the required Python modules in _requirements.txt_ (these can be installed using [http://en.wikipedia.org/wiki/Pip_(package_manager)](Pip), eg: `sudo pip install Flask`).
+To run the application locally, install Python 2.7, MongoDB 2.4 or higher, and the required Python modules in _requirements.txt_ (these can be installed using [Pip](http://en.wikipedia.org/wiki/Pip_(package_manager), eg: `sudo pip install Flask`).
 
 Make sure MongoDB is running, and add the data and index with commands such as the following: 
 
