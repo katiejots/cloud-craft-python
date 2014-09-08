@@ -28,7 +28,9 @@ Run the app on localhost with the following command:
 
     python app.py
 
-## License
+## License and Credits
 This code is dedicated to the public domain to the maximum extent permitted by applicable law, pursuant to CC0 (http://creativecommons.org/publicdomain/zero/1.0/)
+
+App based on code by [TheSteve0](https://github.com/thesteve0/pythonwebmap) and [ryanj](https://github.com/ryanj/flask-base).
 
 Toilet icon by [Ben Hoad](http://twitter.com/benhoad).

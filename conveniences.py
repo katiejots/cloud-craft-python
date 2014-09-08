@@ -22,6 +22,13 @@ def get_db():
         g.mongodb_client = get_MongoDB()
     return g.mongodb_client
 
+# This does not work with Python 3
+#@app.teardown_appcontext
+#def close_db(error):
+#    """Closes the database again at the end of the request."""
+#    if hasattr(g, 'mongodb_client'):
+#        g.mongodb_client.close()
+
 def get_MongoDB():
     client = MongoClient(conf['DB_HOST'], conf['DB_PORT'])
     if conf['DB_USER']:
