@@ -7,7 +7,6 @@ from pymongo.mongo_client import MongoClient
 app = Flask(__name__)
 app.config.from_pyfile('conveniences.cfg')
 conf = app.config
-app.static_url_path = conf['STATIC_URL_PATH'] if conf['STATIC_URL_PATH'] else ''
 
 @app.route('/')
 def index():
